@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+    <script src="vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="lineone">
+            <p>请在此输入相应时间段</p>
+            <input type="text" class="inpu" placeholder="请输入" v-model="keyWord">
+        </div>
+        <div class="box">
+            <p>Power</p>
+            <ul v-for="(p,index) of filPersons" :key="index">
+                <li>
+                    {{p.power}}
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+
+
+    <script>
+        const add = new Vue({
+            el: '#app',
+            data: {
+                keyWord: '',
+                //   数据  
+                persons: [
+                    {
+                        dataTime: '2022/7/15 0:00:00',
+                        power: '0.0216'
+                    },
+                    {
+                        dataTime: '2022/7/15 0:15:00',
+                        power: '0.0218'
+                    },
+                    {
+                        dataTime: '2022/7/15 0:30:00',
+                        power: '0.4021'
+                    },
+                    {
+                        dataTime: '2022/7/15 0:45:00',
+                        power: '0.5867'
+                    },
+                    {
+
+
+                        dataTime: '2022/7/15 1:00:00',
+                        power: '0.3889'
+                    }
+                ],
+                filPersons: [//如果没有此的话，persons的值改变就无法变回原来了
+
+                ]
+
+            },
+            watch: {
+                keyWord: {
+                    immediate: true,//在框的值还没变化时执行如下函数显示出所有的情况
+                    handler(val) {
+                        this.filPersons = this.persons.filter((p) => {
+                            return p.dataTime.indexOf(val) !== -1
+                        })
+                    }
+                }
+
+            }
+
+        })
+
+
+    </script>
+</body>
+
+
+
+</html>
