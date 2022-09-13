@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="./vue.js"></script>
+    <script src="./node_modules/echarts/dist/echarts.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="app" class="content">
+          <div class="top">
+            <p>风电光伏功率预测系统</p>
+          </div>
+          <div class="centerBody">
+              <div class="leftIp">
+                <p>风电</p>
+                <div class="inp">
+                    <input type="text" placeholder="请输入时间" v-model="keyWord1">
+                </div>
+                <div class="inp2">
+                  <div v-for="(l,index) of filPersons1" :key="index">
+                            {{l.power}}
+                    </div>
+              </div>
+
+              </div>
+              <div class="rightIp">
+                <p>光伏</p>
+                <div class="inp">
+                    <input type="text"placeholder="请输入时间" v-model="keyWord2" @change="focu">
+                </div>
+                <div class="inp2">
+                    <div v-for="(p,index) of filPersons2" :key="index">
+                              {{p.power}}
+                      </div>
+                </div>
+                
+              </div>
+              
+          </div>
+          <div class="bottom">
+             <div class="boxLeft">
+                <p>功率曲线</p>
+                <div class="littleBox1"></div>
+             </div>
+             <div class="boxRight">
+                <p>功率曲线</p>
+                <div class="littleBox2"></div>
+             </div>
+
+          </div>
+     </div>
+    </div>
+
+    <script>
+          const app = new Vue({
+
+            el:'#app',
+            data:{
+              keyWord1: '',
+              keyWord2: '',
+
+                //   数据  
+                persons1: [
+                    {
+                        dataTime: '2022/7/15 0:00:00',
+                        power: '0.0216'
+                    },
+                    {
+                        dataTime: '2022/7/15 0:15:00',
+                        power: '0.0218'
+                    },
+                    {
+                        dataTime: '2022/7/15 0:30:00',
+                        power: '0.4021'
+                    },
+                    {
+                        dataTime: '2022/7/15 0:45:00',
+                        power: '0.5867'
+                    },
+                    {
+
+
+                        dataTime: '2022/7/15 1:00:00',
+                        power: '0.3889'
+                    }
+                ],
+                persons2: [
+                    {
+                        dataTime: '2022/7/15 0:00:00',
+                        power: '0.0216'
+                    },
+                    {
+                        dataTime: '2022/7/15 0:15:00',
+                        power: '0.0218'
+                    },
+                    {
+                        dataTime: '2022/7/15 0:30:00',
+                        power: '0.4021'
+                    },
+                    {
+                        dataTime: '2022/7/15 0:45:00',
+                        power: '0.5867'
+                    },
+                    {
+
+
+                        dataTime: '2022/7/15 1:00:00',
+                        power: '0.3889'
+                    }
+                ],
+                filPersons1: [//如果没有此的话，persons的值改变就无法变回原来了
+
+                   ],
+                   filPersons2: [//如果没有此的话，persons的值改变就无法变回原来了
+
+                   ]
+               
+            },
+            watch: {
+                keyWord1: {
+                    immediate: false,//在框的值还没变化时执行如下函数显示出所有的情况
+                    handler(val) {
+                        this.filPersons1 = this.persons1.filter((p) => {
+                            return p.dataTime.indexOf(val) !== -1
+                        })
+                    },                  
+                },
+                keyWord2: {
+                    immediate: false,//在框的值还没变化时执行如下函数显示出所有的情况
+                    handler(val) {
+                        this.filPersons2 = this.persons2.filter((p) => {
+                            return p.dataTime.indexOf(val) !== -1
+                        })
+                    },                  
+                }
+            },
+            methods:{
+              focu(e){
+                if(!e.target.value) {
+
+                  this.filPersons = ''
+
+                }
+              }
+            }
+          
+          })
+          var myChart1 = echarts.init(document.querySelector('.littleBox2'))
+
+          var options =option = {
+                xAxis: {
+                  type: 'category',
+                  data: ['A', 'B', 'C','D','E','F']
+                },
+                yAxis: {
+                  type: 'value'
+                },
+                series: [
+                  {
+                    data: [120, 20, 150,200,180,50],
+                    type: 'line'
+                  }
+                ]
+                         };
+
+           myChart1.setOption(option);
+
+           var myChart2 = echarts.init(document.querySelector('.littleBox1'))
+
+    var options =option = {
+      xAxis: {
+        type: 'category',
+        data: ['A', 'B', 'C','D','E','F']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: [120, 30, 150,50,500,600],
+          type: 'line'
+        }
+      ]
+               };
+        console.log(options.series[0].data);
+       
+
+ myChart2.setOption(option);
+    </script>
+    
+     
+</body>
+
+
+</html>
